@@ -1,0 +1,1012 @@
+#include <iostream>
+#include <fstream>
+#include <math.h>
+using namespace std;
+
+class VectorType
+{
+
+	double* x;
+	double* y;
+	double* z;
+
+public:
+	VectorType(double a = 5, double b = 6, double c = 7)
+	{
+		x = new double;
+		*x = a;
+		y = new double;
+		*y = b;
+		z = new double;
+		*z = c;
+	}
+	VectorType(const VectorType& U)
+	{
+		x = new double;
+		*x = *U.x;
+		y = new double;
+		*y = *U.y;
+		z = new double;
+		*z = *U.z;
+	}
+	~VectorType()
+	{
+		delete x;
+		x = NULL;
+		delete y;
+		y = NULL;
+		delete z;
+		z = NULL;
+	}
+
+	VectorType operator=(const VectorType& U)const
+	{
+		*x = *U.x;
+		*y = *U.y;
+		*z = *U.z;
+		return *this;
+	}
+
+	double operator*(const VectorType& U)const
+	{
+		VectorType R;
+		*R.x = (*x) * (*U.x);
+		*R.y = (*y) * (*U.y);
+		*R.z = (*z) * (*U.z);
+		double dotproduct = ((*x)*(*U.x)) + ((*y)*(*U.y)) + ((*z)*(*U.z));
+
+		return dotproduct;
+	}
+
+	double length()
+	{
+		double l;
+		l = sqrt(((*x) * (*x)) + ((*y) * (*y)) + ((*z) * (*z)));
+		return l;
+	}
+
+	double angle(VectorType &U)
+	{
+		double angle;
+		double len1 = this->length();
+		double len2 = U.length();
+		angle = acos((*this * U) / (len1 * len2)); 
+		return angle;
+	}
+
+	//pre-increment operators:
+	VectorType operator--()
+	{
+		--(*x);
+		--(*y);
+		--(*z);
+		return *this;
+	}
+	VectorType operator++()
+	{
+		++(*x);
+		++(*y);
+		++(*z);
+		return *this;
+	}
+
+	//post-increment operators:
+	VectorType operator--(int)
+	{
+		(*x)--;
+		(*y)--;
+		(*z)--;
+		return *this;
+	}
+	VectorType operator++(int)
+	{
+		(*x)++;
+		(*y)++;
+		(*z)++;
+		return *this;
+	}
+
+	VectorType operator+(const VectorType& U)const
+	{
+		VectorType R;
+		*R.x = *x + *U.x;
+		*R.y = *y + *U.y;
+		*R.z = *z + *U.z;
+		return R;
+	}
+	VectorType operator-(const VectorType& U)const
+	{
+		VectorType R;
+		*R.x = *x - *U.x;
+		*R.y = *y - *U.y;
+		*R.z = *z - *U.z;
+		cout << "Subtraction result is " << * R.x << endl << endl;
+		return R;
+	}
+
+	void display()
+	{
+		cout << "X: " << *x << endl;
+		cout << "Y: " << *y << endl;
+		cout << "Z: " << *z << endl;
+	}
+
+	friend bool operator==(const VectorType& U, const VectorType& V);
+	friend bool operator!=(const VectorType& U, const VectorType& V);
+	friend ostream& operator<<(ostream& print, const VectorType& U);
+	friend istream& operator>>(istream& input, const VectorType& U);	
+};
+
+bool operator==(const VectorType& U, const VectorType& V)
+{
+	return (*U.x == *V.x && *U.y == *V.y && *U.z == *V.z);
+}
+bool operator!=(const VectorType& U, const VectorType& V)
+{
+	return (*U.x != *V.x && *U.y != *V.y && *U.z != *V.z);
+}
+ostream& operator<<(ostream& print, const VectorType& U)
+{
+	print << "Value of x is: " << *U.x << endl;
+	print << "Value of y is: " << *U.y << endl;
+	print << "Value of z is: " << *U.z << endl;
+
+	return print;
+}
+istream& operator>>(istream& input, const VectorType& U)
+{
+	cout << "Enter x: ";
+	//cin >> *U.x;
+	input >> *U.x;
+	cout << "Enter y: ";
+	//cin >> *U.y;
+	input >> *U.y;
+	cout << "Enter z: ";
+	//cin >> *U.z;
+	input >> *U.z;
+
+	return input;
+}
+
+
+void main()
+{
+
+		VectorType U(12, 1, 1);
+		VectorType V(U);
+		
+		double length;
+		length = V.length();
+		cout << "Lenght of V: " << length << endl << endl;
+		double dotproduct = U* V;
+		cout << "Dot product: " << dotproduct << endl;
+		
+		double angl = U.angle(V);
+		cout << "Angle between vectors (in radians): " << angl << endl;
+		VectorType SubR;
+		SubR = U - V;
+		cout << "Subtraction result:" << endl;
+		SubR.display();
+		cout << "Addition result:" << endl;
+		VectorType AddR;
+		AddR = U + V;
+		AddR.display();
+		cout << "Pre/post increment result for V:" << endl;
+		V++;
+		V.display();
+		cout << "Pre/post increment result for U:" << endl;
+		--U;
+		U.display();
+
+		VectorType temp;
+		cout << "Another VectorType object is created. Enter values for it" << endl;
+		cin >> temp;
+		cout << temp;
+
+	
+
+}
+
+
+
+TASK # 2:
+
+
+
+#include <iostream>
+#include <cstring>
+#include <fstream>
+using namespace std;
+
+class StringType
+{
+	char* name;
+	int size;
+public:
+	StringType()
+	{
+		size = 5;
+		name = new char[size];
+		for (int i = 0; i < size; i++)
+		{
+			name[i] = 'a';
+		}
+	}
+	void setter(string a, int s)
+	{
+		delete name;
+		size = s;
+		name = new char[size];
+		for (int i = 0; i < s; i++)
+		{
+			name[i] = a[i];
+		}
+		//name[size - 1] = '\0';
+	}
+	void display()
+	{
+		for (int i = 0; i < size; i++)
+		{
+			cout << name[i];
+		}
+		cout << endl;
+	}
+
+	int lengthstring()
+	{
+		int length = size;
+		return length;
+	}
+
+	void UpperCase()
+	{
+		for (int i = 0; i < size; i++)
+		{
+			if (name[i] >= 97 && name[i] <= 122)
+			{
+				name[i] = name[i] - 32;
+			}
+		}
+	}
+
+	void LowerCase()
+	{
+		for (int i = 0; i < size; i++)
+		{
+			if (name[i] >= 65 && name[i] <= 90)
+			{
+				name[i] = name[i] + 32;
+			}
+		}
+	}
+
+	void atindex(int index)
+	{
+		cout << "The character at the index is: " << name[index] << endl;
+	}
+
+	void substring(int start, int end)
+	{
+		int rsize = (end - start) + 1;
+		char* result = new char[rsize];
+		for (int i = 0, j = start; i < end; i++, j++)
+		{
+			result[i] = name[j];
+			cout << result[i];
+		}
+		cout << endl;
+	}
+
+	int indexofsubstring(string substring)
+	{
+
+		int indexforsubstring = 1000, lengthstring = 0, check = 0;
+		for (int i = 0; substring[i] != '\0'; i++)
+		{
+			lengthstring++;
+		}
+		for (int i = 0; i < size; i++)
+		{//change i not j
+			int j = 0;
+			if (substring[0] == name[i])
+			{
+				indexforsubstring = i;
+				for (int k = i; k < size; k++)
+				{
+					if (j == lengthstring - 1)
+					{
+						check = 1;
+					}
+					if (j > lengthstring)
+					{
+						if (substring[j] != name[k])
+						{
+							indexforsubstring = 0;
+							check = 0;
+							break;
+						}
+					}
+				}
+			}
+			if (check == 1)
+			{
+				break;
+			}
+		}
+		return indexforsubstring - 1;
+	}
+	bool compare(StringType S)
+	{
+		int exact = 0;
+		if (size - S.size == 0)
+		{
+			exact = 1;
+			for (int i = 0; i < size; i++)
+			{
+				if (S.name[i] != name[i])
+				{
+					exact = 0;
+					break;
+				}
+			}
+		}
+		if (exact == 1)
+		{
+			return true;
+		}
+		else return false;
+	}
+
+	void concat(char* a, int s)
+	{
+		int rsize = s + size, i = 0;
+		char* result = new char[rsize];
+
+		for (;i < size; i++)
+		{
+			result[i] = name[i];
+		}
+		for (int j = 0; j < s; j++, i++)
+		{
+			result[i] = a[j];
+		}
+		for (int k = 0; k < rsize; k++)
+		{
+			cout << result[k];
+		}
+	}
+
+	void prepend(char* a, int s)
+	{
+		int rsize = s + size, i = 0;
+		char* result = new char[rsize];
+
+		for (;i < s; i++)
+		{
+			result[i] = a[i];
+		}
+		for (int j = 0; j < size; j++, i++)
+		{
+			result[i] = name[j];
+		}
+		for (int k = 0; k < rsize; k++)
+		{
+			cout << result[k];
+		}
+	}
+
+	StringType operator+(const StringType& S)
+	{
+		cout << "Concatenation where string 2 is joined after the original string: ";
+		int rsize = size + S.size;
+		char* result = new char[rsize];
+		int i = 0;
+
+		for (; i < size; i++)
+		{
+			result[i] = name[i];
+		}
+		for (int j = 0; j < S.size; j++, i++)
+		{
+			result[i] = S.name[j];
+		}
+		for (int k = 0; k < rsize; k++)
+		{
+			cout << result[k];
+		}
+		cout << endl;
+
+		cout << "Concatenation where string 2 is joined before the original string: ";
+
+		char* result2 = new char[rsize];
+		i = 0;
+
+		for (;i < S.size; i++)
+		{
+			result2[i] = S.name[i];
+		}
+		for (int j = 0; j < size; j++, i++)
+		{
+			result2[i] = name[j];
+		}
+		for (int k = 0; k < rsize; k++)
+		{
+			cout << result2[k];
+		}
+		cout << endl;
+
+		return *this;
+	}
+
+	StringType operator=(const StringType& S)
+	{
+		delete[]name;
+		size = S.size;
+		name = new char[size];
+		for (int i = 0; i < size; i++)
+		{
+			name[i] = S.name[i];
+		}
+
+		return *this;
+	}
+
+	bool operator==(const StringType& S)
+	{
+		int exact = 0;
+		if (size - S.size == 0)
+		{
+			exact = 1;
+			for (int i = 0; i < size; i++)
+			{
+				if (S.name[i] != name[i])
+				{
+					exact = 0;
+					break;
+				}
+			}
+		}
+		if (exact == 1)
+		{
+			return true;
+		}
+		else return false;
+	}
+
+	bool operator!=(const StringType& S)
+	{
+		int exact = 0;
+		if (size - S.size == 0)
+		{
+			exact = 1;
+			for (int i = 0; i < size; i++)
+			{
+				if (S.name[i] != name[i])
+				{
+					exact = 0;
+					break;
+				}
+			}
+		}
+		if (exact == 1)
+		{
+			return true;
+		}
+		else return false;
+	}
+
+	bool operator<(const StringType& S)
+	{
+		if (size < S.size) return true;
+		else return false;
+	}
+
+	bool operator>(const StringType& S)
+	{
+		if (size > S.size) return true;
+		else return false;
+	}
+
+	StringType operator[](int index)
+	{
+		cout << "The character at the index is: " << name[index] << endl;
+		return *this;
+	}
+
+	friend ostream& operator<<(ostream& print, StringType& S);
+	friend istream& operator>>(istream& enter, StringType& S);
+
+};
+
+ostream& operator<<(ostream& print, StringType& S)
+{
+	print << "The string is: ";
+	for (int i = 0; i < S.size; i++)
+	{
+		print << S.name[i];
+	}
+	return print;
+}
+istream& operator>>(istream& enter, StringType& S)
+{
+	string temp;
+	cin >> temp;
+	int len = 0;
+	for (int i = 0; temp[i] != '\0'; i++)
+	{
+		len++;
+	}
+	delete[]S.name;
+	S.name = NULL;
+	S.size = len;
+	S.name = new char[S.size];
+	for (int i = 0; i < S.size; i++)
+	{
+		S.name[i] = temp[i];
+		enter >> S.name[i];
+	}
+	return enter;
+}
+
+
+
+int main()
+{
+	cout << "Please enter a string: ";
+	string exp;
+	cin >> exp;
+	int l = 0;
+	for (int i = 0; exp[i] != '\0'; i++)
+	{
+		l++;
+	}
+	StringType S2;
+	S2.setter(exp, l);
+	S2.LowerCase();
+
+	int length = S2.lengthstring();
+	cout << "Length of the string is: " << length << endl;
+
+	StringType s1;
+	cout << "S2 is ";
+	S2.display();
+	cout << "S1 is ";
+	s1.display();
+
+
+	int index = 0;
+	do {
+		cout << "Please enter the index from 0 - " << l - 1 << " which you want the character from : ";
+		cin >> index;
+	} while (index < 0 || index >= l);
+	S2.atindex(index);
+	cout << "Enter index for start and end point from 0 - " << l - 1 << " to extract a substring:" << endl;
+	int start = 0, end = 0;
+	do {
+		cout << "Start index: ";
+		cin >> start;
+	} while (start < 0 || start >= l);
+	do {
+		cout << "End index: ";
+		cin >> end;
+	} while (end <= start && (end < 0 || end >= l));
+	S2.substring(start, end);
+
+
+
+	cout << "Please enter a substring to find the starting index of: ";
+	string substring;
+	cin >> substring;
+	int resultsubstring = S2.indexofsubstring(substring);
+	if (resultsubstring == 999)
+	{
+		cout << "This substring does not exist" << endl;
+	}
+	else
+	{
+		cout << "The starting index of this substring is: " << resultsubstring << endl;
+	}
+
+
+
+	int compare = S2.compare(s1);
+	if (compare == 1)
+	{
+		cout << "Both strings in the program are equal" << endl;
+	}
+	else
+	{
+		cout << "The strings in the program are not equal" << endl;
+	}
+
+
+	cout << "Please enter the string you want to concatenate after & before the current string: ";
+	string postring;
+	cin >> postring;
+	int strlength = 0;
+	for (int i = 0; postring[i] != '\0';i++)
+	{
+		strlength++;
+	}
+	char* pstring = new char[strlength];
+	for (int i = 0; postring[i] != '\0';i++)
+	{
+		pstring[i] = postring[i];
+	}
+	cout << "Concatenation after original string: ";
+	S2.concat(pstring, strlength);
+	cout << endl << "Concaenation before original string: ";
+	S2.prepend(pstring, strlength);
+
+	cout << endl << "S2 and s1 are concatenated using the + operator" << endl;
+	S2 + s1;
+
+	cout << endl << "New object SSS created, contents of S2 copied into SSS through = operator: ";
+	StringType SSS = S2;
+	SSS.display();
+
+	//== operator:
+	cout << "The 2 strings are compared through the == operator:" << endl;
+	if (S2 == s1)
+	{
+		cout << "Both strings are equal" << endl;
+	}
+	else cout << "Both strings are not equal" << endl;
+	cout << "The 2 strings are compared through the != operator:" << endl;
+
+	if (S2 != s1)
+	{
+		cout << "Both strings are equal" << endl;
+	}
+	else cout << "Both strings are not equal" << endl;
+
+	cout << "Both strings are compared through the S2 < s1 operator:" << endl;
+	if (S2 < s1)
+	{
+		cout << "S2 is less than s1" << endl;
+	}
+	else cout << "s1 is less than S2" << endl;
+
+	cout << "Both strings are compared through the S2 > s1 operator:" << endl;
+	if (S2 > s1)
+	{
+		cout << "S2 is greater than s1" << endl;
+	}
+	else cout << "s1 is greater than S2" << endl;
+
+	//[] operator:
+	cout << "Enter the index for which you require the character through the [] operator: ";
+	cin >> index;
+	S2[index];
+
+	//<< operator
+	StringType EXP;
+	cout << "Enter a new string, EXP: ";
+	cin >> EXP;
+	cout << EXP;
+
+	return 0;
+}
+
+
+
+TASK 3:
+
+
+
+#include <iostream>
+using namespace std;
+
+class Roman
+{
+	int number;
+public:
+	Roman(int a = 1000);
+	static int counter;
+	void setter()
+	{
+		int a;
+		if (counter == 2)
+			do { cin >> a; } while (a == 0);
+		else cin >> a;
+		number = a;
+	}
+	friend void conversion(Roman R);
+	Roman operator+(Roman R);
+	Roman operator-(Roman R);
+	Roman operator*(Roman R);
+	Roman operator/(Roman R);
+	bool operator==(Roman R);
+	bool operator!=(Roman R);
+	bool operator<(Roman R);
+	bool operator>(Roman R);
+	Roman operator++(); // PRE INCREMENT
+	Roman operator++(int); // POST INCREMENT
+	Roman operator--(); // PRE DECREMENT
+	Roman operator--(int); // POST DECREMENT 
+	~Roman()
+	{
+
+	}
+};
+
+int Roman::counter = 0;
+
+Roman::Roman(int a)
+{
+	number = a;
+	counter++;
+}
+Roman Roman::operator+(Roman R)
+{	
+	Roman Result;
+	Result.number = R.number + number;
+	cout << "The answer in decimals is: " << Result.number << endl;
+	cout << "The answer in roman numerals is: ";
+	conversion(Result);
+	return *this;
+}
+Roman Roman::operator-(Roman R)
+{
+	Roman Result;
+	Result.number = number - R.number;
+	cout << "The answer in decimals is: " << Result.number << endl;
+	if (Result.number < 0)
+	{
+		cout << "Negative Roman numbers do not exist, this result cannot be displayed" << endl << endl;
+	}
+	else if (Result.number >= 0)
+	{
+		cout << "The answer in Roman numbers is: ";
+		conversion(Result);
+	}
+	return *this;
+}
+Roman Roman::operator*(Roman R)
+{
+	Roman Result;
+	Result.number = number * R.number;
+	cout << "The answer in decimals is: " << Result.number << endl;
+	cout << "The answer in Roman numbers is: ";
+	conversion(Result);
+	return *this;
+}
+Roman Roman::operator/(Roman R)
+{
+	Roman Result;
+	Result.number = number / R.number;
+	cout << "The answer in decimals is: " << Result.number << endl;
+	cout << "The answer in Roman numbers is: ";
+	conversion(Result);
+	return *this;
+}
+bool Roman::operator==(Roman R)
+{
+	if (number == R.number)
+		return true;
+	else return false;
+}
+bool Roman::operator!=(Roman R)
+{
+	if (number != R.number)
+		return true;
+	else return false;
+}
+bool Roman::operator<(Roman R)
+{
+	if (number <= R.number)
+	{
+		return true;
+	}
+	else return false;
+}
+bool Roman::operator>(Roman R)
+{
+	if (number > R.number)
+	{
+		return true;
+	}
+	else return false;
+}
+Roman Roman::operator++()
+{
+	++number;
+	cout << "The answer in decimals is: " << number << endl;
+	cout << "The answer in Roman numbers is: ";
+	conversion(*this);
+	return *this;
+}
+Roman Roman::operator++(int)
+{
+	number++;
+	cout << "The answer in decimals is: " << number << endl;
+	cout << "The answer in Roman numbers is: ";
+	conversion(*this);
+	return *this;
+}
+Roman Roman::operator--()
+{
+	--number;
+	cout << "The answer in decimals is: " << number << endl;
+	cout << "The answer in Roman numbers is: ";
+	conversion(*this);
+	return*this;
+}
+Roman Roman::operator--(int)
+{
+	number--;
+	cout << "The answer in decimals is: " << number << endl;
+	cout << "The answer in Roman numbers is: ";
+	conversion(*this);
+	return *this;
+}
+
+void conversion(Roman R)
+{
+	// FIRST FIND DIGITS
+	int digits = 0, temp = R.number;
+	for (;temp > 0;)
+	{
+		temp = temp / 10;
+		digits++;
+	}
+	int repeat = R.number / 3999;
+	for (int i = 0; i < repeat; i++)
+	{
+		cout << "MMMCMXCIX";
+	}
+	int x = R.number % 3999;
+
+	int tempvalue = 0, k = 1, value = 0, a = 0, b = 0;
+	int* digitsarr;
+	int size = 300, tempsize = 1;
+	digitsarr = new int[size];
+
+	for (int i = 0; i < digits; i++)
+	{
+		k = k * 10;
+		tempvalue = a + tempvalue;
+		a = ((x % k) - tempvalue) / (k / 10);
+		digitsarr[i] = a;
+		tempsize++;
+	}
+	size = tempsize - 1;
+	int temppp = 0;
+	for (int i = 0; i < size / 2; i++)
+	{
+		temppp = digitsarr[i];
+		digitsarr[i] = digitsarr[(size - 1) - i];
+		digitsarr[(size - 1) - i] = temppp;
+	}
+	int y = 0;
+	for (int i = digits, z = 0; i > 0; i--)
+	{
+		if (i == 4)
+		{
+			if (digitsarr[z] == 3)
+				y = 3;
+			else if (digitsarr[z] == 2)
+				y = 2;
+			else if (digitsarr[z] == 1)
+				y = 1;
+			for (int j = 0; j < y; j++)
+			{
+				cout << "M";
+			}
+		}
+		else if (i == 3)
+		{
+			y = digitsarr[z];
+			if (y <= 3)
+			{
+				for (int j = 0; j < y; j++)
+				{
+					cout << "C";
+				}
+			}
+			else if (y == 4)
+				cout << "CD";
+			else if (y >= 5 && y <= 8)
+			{
+				cout << "D";
+				for (int j = 0; j < y - 5;j++)
+				{
+					cout << "C";
+				}
+			}
+			else if (y == 9)
+				cout << "CM";
+			
+		}
+		else if (i == 2)
+		{
+			y = digitsarr[z];
+			if (y <= 3)
+			{
+				for (int j = 0; j < y; j++)
+				{
+					cout << "X";
+				}
+			}
+			else if (y == 4)
+				cout << "XL";
+			else if (y >= 5 && y <= 8)
+			{
+				cout << "L";
+				for (int j = 0; j < y - 5;j++)
+				{
+					cout << "X";
+				}
+			}
+			else if (y == 9)
+				cout << "XC";
+		}
+		else if (i == 1)
+		{
+			y = digitsarr[z];
+			if (y <= 3)
+			{
+				for (int j = 0; j < y; j++)
+				{
+					cout << "I";
+				}
+			}
+			else if (y == 4)
+				cout << "IV";
+			else if (y >= 5 && y <= 8)
+			{
+				cout << "V";
+				for (int j = 0; j < y - 5;j++)
+				{
+					cout << "I";
+				}
+			}
+			else if (y == 9)
+				cout << "IX";
+		}
+		z++;
+	}
+	cout << endl << endl;
+}
+
+int main()
+{
+	Roman R;
+	Roman R1;
+	cout << "Please enter the value for the 1st number: ";
+	R.setter();
+	cout << "Please enter the value for the 2nd number other than 0: ";
+	R1.setter();
+
+	cout << "Addition:" << endl;
+	R + R1;
+	cout << "Subtraction:" << endl;
+	R - R1;
+	cout << "Multiplication:" << endl;
+	R* R1;
+	cout << "Division:" << endl;
+	R / R1;
+	if (R == R1)
+	{
+		cout << "Both roman numbers are the same" << endl << endl;
+	}
+	if (R != R1)
+	{
+		cout << "Both roman numbers are not the same" << endl << endl;
+	}
+	if (R > R1)
+	{
+		cout << "1st Roman number is greater than the 2nd Roman number" << endl << endl;
+	}
+	if (R1 > R)
+	{
+		cout << "2nd Roman number is greater than the 1st Roman number" << endl << endl;
+	}
+	
+	cout << "The answer through ++ operators (pre/post) for the 1st Roman number is: ";
+	++R;
+	cout << "The answer through the -- operators (pre/post) for the 1st Roman number is: ";
+	--R;
+
+	return 0;
+}

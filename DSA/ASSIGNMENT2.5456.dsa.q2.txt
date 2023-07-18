@@ -1,0 +1,185 @@
+//QUESTION 2  OF ASSIGNMENT 2
+//21L-5456
+//MUHAMMAD ABDULLAH
+
+# include <iostream>
+using namespace std;
+
+template <class T>
+class stackoboi
+{
+	T* stackbazi;
+	int size;
+	T topo;
+public:
+	stackoboi()
+	{
+		size = 0;
+		stackbazi = new T[size];
+		topo = 0;
+	}
+
+
+	stackoboi(int sizu)
+	{
+		size = sizu;
+		stackbazi = new T[size];
+		topo = 0;
+	}
+
+
+	void pushbazi(T veli)
+	{
+		if (size == topo)
+		{
+			cout << "cant push more \n stacky bhar gaya hai :// \n";
+		}
+		else
+		{
+			stackbazi[topo] = veli;
+			topo++;
+		}
+	}
+
+
+	void popbazi()
+	{
+		if (topo == 0)
+		{
+			cout << "khali stack hahahaah \n";
+		}
+
+		else
+		{
+			topo--;
+		}
+
+	}
+
+	void display() {
+		for (int i = topo-1 ; i >= 0; i--) {
+			
+			//cout << endl;
+			cout << stackbazi[i] << " " << endl;
+		}
+	}
+
+
+
+	void ultipulti(int sizelol)
+	{
+		int sizehaha = sizelol;
+		int topotemp = 0;
+		topotemp = topo;
+		stackoboi <T> lmao(sizehaha);
+		T  * arraybazi = new T [sizehaha];
+		for (int i = topo ; i>= 0 ;  i--)
+		{
+			 arraybazi[i]=  stackbazi[topo];
+			topo--;
+
+		}
+
+		
+		cout << " the experiece of invert \n";
+		for (int i = sizehaha-1 ; i >= 0; i--)
+		{
+		//	 lmao.stackbazi[topo] = arraybazi[i];
+			//topo++;
+			lmao.pushbazi(arraybazi[i]);
+		}
+		lmao.display();
+
+		topo = topotemp ;
+	}
+
+
+	void undoyey(int size)
+	{
+		stackoboi <T> lmao2(size);
+
+		T* arraybazi1 = new T[size];
+		
+		int j = -1;
+		int topotemp2 = 0; 
+		topotemp2 = topo;
+		for (int i = topo; i >=0; i--)
+		{
+			arraybazi1[j] = stackbazi[topo];
+			topo--;
+			j++;
+
+		}
+		
+
+		
+
+		for (int i =size-1 ;i >= 0 ; i--)
+		{
+			if (i == size - 1)
+			{
+
+		   }
+			else {
+				lmao2.pushbazi(arraybazi1[i]);
+			}
+		}
+	
+		lmao2.display();
+
+		topo = topotemp2;
+		
+		
+	}
+
+
+};
+
+
+
+
+int main()
+{
+	cout << "\t\t\t\t PLEASE ENTER THE SIZE OF YOUR STACK \n";
+	int size = 0; 
+	cin >> size;
+
+	stackoboi <int> bhai(size);
+	int val = 0; 
+	for (int i = 0; i < size; i++)
+	{
+		cout << "PLZ INPUT UR VALUE " << i+1 << " : ";
+		cin >> val;
+		bhai.pushbazi(val);
+		cout << endl;
+	}
+	
+	
+	bhai.display();
+	cout << endl;
+	bhai.ultipulti(size);
+	cout << endl;
+	
+	
+	//cout << "tell us the limit of ur stack \n";
+	//int limit = 0; 
+	//cin >> limit;
+	////cout << size << endl;
+	//limit = size - limit;
+	//int j  =size;
+	//for (int i = 0; i < limit; i++)
+	//{
+	//	cout << "the experience of undo " << i + 1 << endl;
+	//	bhai.undoyey(j);
+	//	cout << endl;
+	//	j--;
+	//}
+
+
+	
+
+	
+
+
+	return 0;
+}

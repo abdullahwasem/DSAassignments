@@ -1,0 +1,208 @@
+#include <iostream>
+
+using namespace std;
+
+template <class T>
+class Q
+{
+public :
+	template <class T>
+	class node
+	{
+		public :
+		T data;
+		node <T>* next;
+	};
+
+	node<T>* front;
+	node<T>* rear;
+
+	Q()
+	{
+		front = NULL;
+		rear = NULL;
+	}
+
+
+	void enQ(T const& val)
+	{
+		node <T>* valbazi = new node<T>;
+		valbazi->data = val;
+
+		if (front == NULL)
+		{
+			rear = valbazi;
+			front = valbazi;
+			front->next =NULL;
+		
+		}
+
+		else if (front->next ==  NULL)
+		{
+			rear = valbazi;
+			front->next = rear;
+
+		}
+
+		else
+		{
+			node <T>* temp = new node <T>;
+			temp = rear;
+			rear = valbazi;
+			temp->next = rear;
+
+		}
+		rear->next = NULL;
+
+	}
+	
+		bool empty()
+	{
+			if (front == NULL)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+
+
+	}
+
+	void DQ()
+	{
+		if (empty())
+		{
+			cout << "hahaha lol mai pehle hi khali hu hahah \n";
+	   }
+
+		else 
+		{
+			front = front->next;
+		}
+
+
+
+
+	}
+
+	void print()
+	{
+		node <T>* tempobazi = front;
+		while (tempobazi != NULL)
+		{
+			cout << tempobazi->data << "->";
+			tempobazi = tempobazi->next;
+		}
+		cout << endl;
+
+	}
+
+
+	int size()
+	{
+		int count = 0;
+		node<T>* tempohah = front;
+
+		while (tempohah != NULL)
+		{
+			count++;
+			tempohah = tempohah->next;
+		}
+		//cout  << count;
+		return count;
+	}
+
+	T frontdedo()
+	{
+		cout <<"front pr hai jee = "<< front->data << endl;
+		return front->data;
+	}
+
+	T reardedo()
+	{
+		cout <<"rear pr hai jee = "<< rear->data << endl;
+		return rear->data;
+	}
+
+	void mushkilfunc()
+	{
+		int sizee = size()/2;
+		int j = 0;
+		int jj = 0;
+		node<T>* tempmid = front;
+		node<T>* tempmidmini = front;
+		node<T>* tempstart = front->next;
+
+		while (tempmid != NULL)
+		{
+			tempmid = tempmid->next;
+			j++;
+			if (j == sizee)
+			{
+				break;
+			}
+		}
+		while (tempmidmini != NULL)
+		{
+			tempmidmini = tempmidmini->next;
+			jj++;
+			if (jj == sizee-1)
+			{
+				break;
+			}
+		}
+		node<T>* temp = tempmid;
+		node<T>* temp1 = tempstart;
+		int yaar = size();
+		//cout << yaar;
+		for (int i = 0; i < yaar; i++)
+		{
+			
+			if (i % 2 == 0)
+			{
+				front->next = tempmid;
+				tempmid->next = tempstart;
+				tempmidmini->next = temp->next;
+				temp = temp->next;
+				tempmid = temp;
+				temp1 = temp1->next;
+				tempstart = temp1;
+			}
+		}
+
+	}
+
+};
+
+
+
+int main()
+{
+	Q <int> brohaha;
+	brohaha.enQ(1);
+	brohaha.enQ(2);
+	brohaha.enQ(3);
+	brohaha.enQ(4);
+	brohaha.enQ(5);
+	brohaha.enQ(6);
+	brohaha.enQ(7);
+	brohaha.enQ(8);
+	brohaha.enQ(9);
+	brohaha.enQ(10);
+	brohaha.print();
+	//brohaha.DQ();
+	brohaha.print();
+	cout << "size hai jee =";
+	int sizeee = brohaha.size();
+	cout << sizeee;
+	cout << endl;
+	brohaha.frontdedo();
+	brohaha.reardedo();
+	brohaha.mushkilfunc();
+	//brohaha.print();
+
+	return 0;
+
+}

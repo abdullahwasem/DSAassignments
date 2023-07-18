@@ -1,0 +1,215 @@
+
+#include <iostream>
+using namespace std;
+
+
+
+template <class T>
+class node
+{
+
+public:
+    T data;
+    node<T>* next;
+    node()
+    {
+        next = nullptr;
+    }
+
+};
+
+template <class T>
+
+class linkylist
+{
+public:
+    node<T>* head;
+
+    linkylist()
+    {
+        head = NULL;
+    }
+
+    void insertinstart(T const val)
+    {
+        node<T>* headnode = new node <T>;
+            headnode->data = val;
+        headnode->next = head;
+        head = headnode;
+    }
+
+
+    void insertatend(T const val)
+    {
+        node<T>* temp = head;
+
+        while (temp->next != NULL)
+        {
+            temp = temp->next;
+
+        }
+
+        node<T>* tailnode = new node <T>;
+        tailnode->data = val;
+        temp->next = tailnode;
+    }
+
+
+
+    void print()
+    {
+
+        node <T>* temp = head;
+
+        while (temp != NULL) {
+            cout << temp->data << " -> ";
+            temp = temp->next;
+        }
+        cout << "NULL" << endl;
+    }
+
+
+    bool searchingbazi(T const& val)
+    {
+        node <T>* tempo = head;
+
+        while (tempo != NULL)
+        {
+
+
+           
+            if (tempo->data == val)
+            {
+                return true;
+            }
+            tempo = tempo->next;
+        }
+
+    }
+
+    bool emptybazi()
+    {
+        if (head == NULL)
+        {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    bool insertmarzise(T const& val1, T const& val2)
+    {
+        node<T>* addit = new node <T>(val1);
+        node <T>* temp = head;
+        int c = 0;
+        while (temp != NULL)
+        {
+            temp = temp->next;
+            if (temp->data == val2)
+            {
+                c = 1;
+                break;
+            }
+
+        }
+        if (c == 0)
+        {
+            return 0;
+            cout << "cant insert as data give isnt present \n";
+
+        }
+
+        else if (c == 1)
+        {
+            while (temp->data != val2) {
+                temp = temp->next;
+                if (temp->data == val2)
+                {
+                    addit->next = temp->next;
+                    temp->next = addit;
+                }
+            }
+
+        }
+
+    }
+
+
+
+    void deleteall(T const& val)
+    {
+        node<T>* temp = head;
+
+        node<T>* prev = head;
+        node<T>* current = head;
+
+        prev = current;
+        current = current->next;
+        while (temp != NULL)
+        {
+            
+            if (temp->data == val)
+            {
+                prev->next = current->next;
+                cout << "element found and deleted \n";
+            }
+            temp = temp->next;
+        }
+
+    }
+
+
+    void deletefromstart()
+    {
+        node <T>* temp = head;
+        head = head->next;
+        delete temp; 
+
+
+    }
+
+
+
+
+
+
+
+
+
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+int main()
+{
+    linkylist <int> bhaisahab;
+    bhaisahab.insertinstart(2);
+     bhaisahab.insertinstart(6) ;
+         bhaisahab.insertinstart(7) ;
+         bhaisahab.insertatend(9) ;
+         bhaisahab.insertinstart(7) ;
+         bhaisahab.insertinstart(8) ;
+
+         bhaisahab.insertinstart(9) ;
+         bhaisahab.deleteall(7);
+         bhaisahab.print() ;
+         cout << bhaisahab.searchingbazi(2) << endl; ;
+         cout<<bhaisahab.searchingbazi(9)<<endl ;
+         cout << bhaisahab.searchingbazi(10) << endl ;
+         bhaisahab.print();
+         bhaisahab.deletefromstart();
+         bhaisahab.print();
+
+}

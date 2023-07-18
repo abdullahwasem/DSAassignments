@@ -1,0 +1,454 @@
+#include<iostream>
+#include<string>
+#include<fstream>
+using namespace std;
+template <typename T>
+class Node
+{
+public:
+	T data;
+	Node* next;
+	Node()
+	{
+		data = NULL;
+		next = nullptr;
+	}
+};
+
+template<typename T>
+class Stack
+{
+private:
+	Node<T>* header;
+	Node<T>* topo;
+	int size;
+public:
+	Stack()
+	{
+		header = nullptr;
+		topo = nullptr;
+		size = 0;
+	}
+	bool isEmpty()
+	{
+		if (topo == NULL)
+			return true;
+		else return false;
+	}
+	int Size()
+	{
+		return size;
+	}
+	bool Top(T& x)
+	{
+		if (isEmpty())
+			return false;
+		else
+		{
+			Node<T>* temp = topo;
+			x = temp->data;
+			return true;
+		}
+
+	}
+	void pop()
+	{
+		if (topo == NULL)
+		{
+			cout << "Stack underflow error";
+		}
+		else
+		{
+			Node<T>* temp = topo;
+			topo = topo->next;
+			int x = temp->data;
+			delete(temp);
+			size--;
+		}
+	}
+	void pushbazi(T const& e)
+	{
+		Node<T>* newNode = new Node<T>;
+		if (e == NULL)
+		{
+			cout << "Stack overflow error";
+
+		}
+		else
+		{
+			newNode->data = e;
+			newNode->next = topo;
+			topo = newNode;
+			size++;
+
+		}
+	}
+	void print()
+	{
+		Node<T>* newNode = topo;
+		while (newNode != nullptr)
+		{
+			cout << newNode->data << endl;
+			newNode = newNode->next;
+		}
+	}
+};
+class XMLData
+{
+private:
+	string text;
+	int lineNo;
+public:
+	XMLData()
+	{
+		text = '\0';
+		lineNo = 0;
+	}
+	void check(string XMLCode)
+	{
+		Stack<char> stack;
+		ifstream file;
+		file.open(XMLCode);
+		if (!file)
+			cout << "No file found";
+		else
+		{
+			lineNo = 1;
+			while (!file.eof())
+			{
+				getline(file, text, '\n');
+
+				CHECKING THE XML HEADER(XML PROLOG)
+				if (lineNo == 1)
+				{
+					char c;
+					if (text.find("<?") == 0)
+					{
+						stack.push(text[0]);
+						stack.push(text[1]);
+						for (int i = 0; i < text.length(); i++)
+						{
+
+						    if (text[i] == '"' && text[i + 1] != '?' && text[i + 1] != ' ')
+								stack.push(text[i]);
+							else if(text[i] == '\'' && text[i + 1] != '?' && text[i + 1] != ' ')
+								stack.push(text[i]);
+							else if (text[i] == '"' && text[i + 1] == ' ')
+							{
+								stack.Top(c);
+								if (c != '"')
+									cout << " quotes \" are missing at line no 1\n ";
+									stack.pop();
+							}
+
+							else if (text[i] == '"' && text[i + 1] == '?')
+							{
+								stack.Top(c);
+								if (c != '"')
+									cout << " quotes \" are missing at line no 1\n ";
+									stack.pop();
+
+							}
+							else if (text[i] == '\'' && text[i + 1] == ' ')
+							{
+								stack.Top(c);
+								if (c != '\'')
+									cout << " quotes \' are missing at line no 1\n ";
+									stack.pop();
+
+							}
+							else if (text[i] == '\'' && text[i + 1] == '?')
+							{
+								stack.Top(c);
+								if (c != '\'')
+									cout << " quotes \' are missing at line no 1\n ";
+									stack.pop();
+
+							}
+
+							else if (text[i] == '>')
+							{
+								stack.pop();
+								stack.Top(c);
+								if (c != '<')
+								cout << "tag bracket > is missing at line no 1\n ";
+
+							}
+
+							else if (text[i] == '?' && text[i + 1] == '>')
+							{
+								stack.pop();
+								stack.Top(c);
+								if (c != '?')
+									cout << "opening tag's ? is missing at line no 1\n ";
+
+							}
+
+
+						}
+						/*string temp;
+						char a;
+						if (!stack.isEmpty())
+						{
+							stack.Top(a);
+							if (a == '>')
+								temp = "closing";
+							else 
+						}*/
+					}
+					else
+					{
+						cout << "header's opening tag is missing at line no 01";
+					}
+
+					if (!stack.isEmpty())
+					{
+						char y;
+						stack.Top(y);
+						cout << y << "is missing at line 01";
+					}
+				}
+
+				COMMENT CHECK
+
+				bool comment = false;
+				bool open = false;
+				char c;
+				for (int i = 0; i < text.length(); i++)
+				{
+					
+
+					 if (text[i] == '-' && text[i + 1] == '-' && text[i + 2] == '!' && text[i + 3] == '>')
+					{
+						comment = true;
+
+						stack.Top(c);
+						if (c != '-')
+						{
+							comment = false;
+							break;
+						}
+
+						else
+						{
+							stack.pop();
+							comment = true;
+
+						}
+						stack.Top(c);
+						if (c != '-')
+						{
+							comment = false;
+							break;
+						}
+
+						else
+						{
+							stack.pop();
+							comment = true;
+
+						}
+						stack.Top(c);
+						if (c != '!')
+						{
+							comment = false;
+							break;
+						}
+
+						else
+						{
+							stack.pop();
+							comment = true;
+
+						}
+						stack.Top(c);
+						if (c != '<')
+						{
+							comment = false;
+							break;
+						}
+
+						else
+						{
+							stack.pop();
+							comment = true;
+
+						}
+
+					}
+				}
+
+				if (!comment)
+				{
+					cout << "closing tag of comment has error or missing at line no " << lineNo;
+				}
+				if (!open)
+				{
+					cout << "opening tag of comment has error or missing at line no " << lineNo;
+				}
+
+				int starttingbracket = text.find('<');
+				int endingbracket = text.find('>');
+				int space = text.find(' ');
+				int backslash = text.find('</');
+				int equal = text.find('=');
+				char* ptr;
+				char temppop;
+				bool ending = false;
+				if (text[starttingbracket + 1] == '/')
+					ending = true;
+
+				string s;
+
+				if (space == -1)
+				{
+					for (int i = starttingbracket + 1; i <= endingbracket - 1; i++)
+					{
+						stack.push(text[i]);
+					}
+
+				}
+				/*if (space != -1)
+				{
+					if (backslash == -1 && text[endingbracket + 1] == '\0')
+					{
+						int n = 0;
+						for (int j = starttingbracket + 1; j < space; j++)
+						{
+							stack.push(text[j]);
+							n++;
+						}
+						ptr = new char[n];
+						for (int j = starttingbracket + 1, k = 0; j < space; j++, k++)
+						{
+							ptr[k] = text[j];
+							s = ptr;
+							reverse(s.begin(), s.end());
+						}
+
+						if (text[equal + 1] == '"')
+						{
+							stack.push(text[equal + 1]);
+							for (int z = equal + 2; z < endingbracket; z++)
+							{
+								if (text[z] == '"')
+								{
+									stack.Top(temppop);
+									if (temppop == '"')
+										stack.pop();
+									break;
+
+								}
+								else
+								{
+									cout << " Error ending quote of the attribute missing " << lineNo << endl;
+									stack.pop();
+									break;
+								}
+							}
+						}
+						else cout << "Error starting quote of the attribute missing " << lineNo << endl;
+					}*/
+					if (backslash == -1 && text[endingbracket + 1] != '\0')
+					{
+						int n = 0;
+						for (int j = starttingbracket + 1; j < space; j++)
+						{
+							stack.push(text[j]);
+							n++;
+						}
+						ptr = new char[n];
+						for (int j = starttingbracket + 1, k = 0; j < space; j++, k++)
+						{
+							ptr[k] = text[j];
+							s = ptr;
+							reverse(s.begin(), s.end());
+						}
+
+						
+						else cout << "Error starting quote of the attribute missing " << lineNo << endl;
+
+
+
+
+
+
+
+
+						cout << "Error ending tag of the element missing" << lineNo;
+					}
+				}
+				if (backslash != -1)
+				{
+					char c;
+								int i = backslash + 1;
+									while (text[i] != '>')
+										i++;
+
+									for (int j = i,k=0; i > backslash; i--,k++)
+									{
+										stack.Top(c);
+										if(c==text[k])
+										stack.pop();
+										else
+										{
+											cout<<"ending tag of the element is missing at line" << lineNo;
+											stack.pop();
+										}
+
+
+									}
+
+
+
+
+
+							}
+							
+
+						}
+
+
+
+
+
+
+
+
+				lineNo++;
+
+			}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		}
+	}
+
+			
+			
+
+	
+
+};
+
+void main()
+{
+	XMLData x;
+	x.check("XMLCode.txt");
+
+
+
+
+}

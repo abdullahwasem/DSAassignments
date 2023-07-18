@@ -1,0 +1,125 @@
+#include <iostream>
+using namespace std;
+
+
+int binsearch(int* array,int val, int darmiyan, int end)
+{
+	int start = 0;
+	//darmiyan = size / 2;
+	//
+	//int end = size;
+	/*for (int i = start; i < end; i++)
+	{
+		
+		for (int j = start; j < end; j++)
+		{
+			if (array[j] == val)
+			{
+				cout << "lagbai \n";
+				c = 1;
+			}
+			else if (array[j] <= val)
+			{
+				cc = 1;
+			}
+			else if (array[j] >= val)
+			{
+				ccc = 1;
+			}
+
+		}
+		if (c != 1)
+		{
+			if (cc == 1)
+			{
+				start = size / 2;
+			}
+			else if (ccc == 1)
+			{
+				end = size / 2;
+			}
+		}
+
+	}*/
+
+	if (start > end)
+	{
+		return 0;
+	}
+
+	else
+	{
+		darmiyan = (start + end) / 2;
+		if (val == array[darmiyan])
+		{
+			return darmiyan;
+		}
+ 
+		else if (val> array[darmiyan])
+		{
+			return binsearch(array,val, darmiyan + 1, end);
+		}
+
+		else
+		{
+			return binsearch(array, val, start, darmiyan - 1);
+		}
+	}
+
+
+
+
+
+
+}
+
+
+
+
+
+
+int divi(int num1, int num2)
+{
+	if (num1 < num2)
+	{
+		return 0;
+
+	}
+	return 1 + divi(num1 - num2, num2);
+}
+
+int  modu(int a, int m)
+{
+	if (m == a)
+	{
+		return 0;
+	}
+
+	else if (m < a)
+	{
+		return modu(a, m + m);
+		
+	}
+	else
+	{
+		return a - m;
+	}
+}
+
+
+int main()
+{
+
+
+	int* a = new int[100];
+	for (int i = 0; i < 100; i++)
+	{
+		cin >> a[i];
+	}
+
+	int valuu = 0;
+	cout << "input value \n";
+	cin >> valuu;
+
+	binsearch(a, valuu, 0, 100);
+}

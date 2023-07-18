@@ -1,0 +1,428 @@
+
+#include <iostream>
+
+using namespace std;
+
+//class for the node formation 
+template <class T>
+class node
+{
+public:
+    T data;
+    node<T>* next;
+    node()
+    {
+        next = NULL;
+    }
+};
+
+
+//template class formation 
+template <class T>
+class sortedset
+{
+public:
+
+
+    node<T>* head;
+    node <T>* tail;
+
+    sortedset()
+    {
+        head = nullptr;
+        tail = nullptr;
+    }
+
+
+
+    //inserting an element at head position  
+    void insertathead(T const val)
+    {
+       
+
+        node <T>* funnode = new node <T>;
+        node<T>* temp = head;
+
+        if (head == NULL)
+        {
+            funnode->data = val;
+           funnode->next = head;
+          // funnode->next = NULL;
+            head = funnode;
+        }
+        else
+        {
+
+            while (temp->next != NULL && temp->data != val  )
+            {
+
+                temp = temp->next;
+                }
+                   
+            if (temp->data == val)
+            {
+            }
+
+                    else {
+                    
+                funnode->data = val;
+                funnode->next = head;
+                // funnode->next = NULL;
+                head = funnode;
+                    }
+
+                    
+
+                   
+
+            }
+
+           
+            
+      
+
+            
+        }
+
+       
+        
+
+    
+
+    //inserting element anywhere in the middle 
+
+    void insertafter(T const& val1, T const& val2)
+    {
+        node<T>* addit = new node <T>;
+        addit->data = val1;
+
+        node <T>* temp = head;
+        int c = 0;
+        while (temp != NULL)
+        {
+            temp = temp->next;
+            if (temp->data == val2)
+            {
+                c = 1;
+                break;
+            }
+        }
+
+
+        if (c == 0)
+        {
+            cout << "cant insert as data given isnt even present \n";
+
+        }
+
+        else if (c == 1)
+        {
+            while (temp->data != val2)
+            {
+                temp = temp->next;
+                if (temp->data == val2)
+                {
+                    addit->next = temp->next;
+                    temp->next = addit;
+                }
+            }
+        }
+
+
+
+
+    }
+
+    // insertion at the tail 
+    void insertattail(T const val)
+    {
+        node<T>* temp = head;
+        if (temp->next != NULL) {
+            temp = temp->next;
+
+        }
+
+        node <T>* funnode2 = new node <T>;
+        funnode2->data = val;
+        temp->next = funnode2;
+
+
+
+    }
+
+    // Function to print the
+    // singly linked list
+    void print()
+    {
+        node<T>* temp = head;
+       
+   
+        while (temp != NULL) 
+        {
+                cout << temp->data << " -> ";
+                temp = temp->next;
+            
+        }
+        cout << "NULL" << endl;
+    }
+    
+
+    void sort()
+    {
+        node<T>* temp = head;
+        node <T>* prev = nullptr;
+        int size = 0; 
+        while (temp != nullptr)
+        {
+            size++;
+            temp = temp->next;
+        }
+        temp = head->next; 
+        prev = head; 
+        for (int i = 0; i < size; i++)
+        {
+            for (int j = 0; j < size - 1; j++)
+            {
+                if (prev->data > temp->data)
+                {
+                    swap(temp->data, prev->data); 
+                }
+                temp = temp->next;
+                prev = prev->next;
+            }
+            temp = head->next;
+            prev = head;
+        }
+    }
+
+    void unionofset(sortedset <T> const & otherset )
+    {
+
+        node<T>*temp = head;
+        while (temp ->next!= NULL)
+        {
+            temp = temp->next;
+        }
+        temp->next = otherset.head;
+        sort();
+        
+        node<T>* current = head;
+        node<T>* prev = head;
+        while (current != NULL)
+        {
+            if (current->data == prev->data)
+            {
+                prev->next = current->next;
+                
+            }
+            prev = current;
+            current = current->next;
+        }
+
+        
+       
+
+    }
+
+
+    void breakpointer(T const& index)
+    {
+        node <T>* temp = head;
+        int c = 1; 
+        //vaidation check 
+        while (temp->next != NULL)
+        {
+            temp = temp->next;
+            c++;
+        }
+        if (index > c || index <= 0)
+        {
+            cout << " invalid index \n plz try again \n ";
+           // cin >> index;
+
+        }
+        else
+        {
+            node <T>* temp1 = head;
+            for (int i = 0; i <c; i++)
+            {
+                temp1 = temp1->next; 
+                if (temp1->next == NULL)
+                {
+                    temp1->next = head;
+                }
+               
+
+            }
+            
+            temp1 = head;
+
+            //printing 
+            for (int i = 0; i < c + index; i++)
+            {
+                if (i >= index)
+                {
+
+                    {
+                        cout << temp1->data << " -> ";
+                        temp1 = temp1->next;
+
+                    }
+                    
+                }
+                else {
+                    temp1 = temp1->next;
+                }
+
+            }
+            cout << "NULL" << endl;
+
+
+        }
+
+
+    }
+
+    void reversemylist()
+        {
+        node<T>* current = head;
+        node<T>* temp1  = current->next;
+        node<T>* temp2 = current->next->next ;
+        node<T>* temp = head ;
+        int lenhahah = 0; 
+       // current->next = NULL;
+        while (temp != NULL)
+        {
+
+            lenhahah++;
+            temp = temp->next;
+
+                
+        }
+        current->next = NULL;
+        for (int i = 0; i < lenhahah -1; i++)
+        
+        {
+            
+            temp1->next = current;
+            current = temp1;
+            head = current;
+
+            temp1 = temp2;
+            if (temp2 != NULL)
+            {
+                temp2 = temp2->next;
+            }
+            
+            
+         }
+       
+        
+
+
+    }
+
+
+    void deletekrdoab(int indexbai)
+    {
+        node<T>* current = head;
+        node<T>* temp = head;
+        node<T>* prev = head;
+        int lenagain = 0;
+        while (temp != NULL)
+        {
+            lenagain++;
+            temp = temp->next;
+        }
+
+        if (indexbai > lenagain || indexbai <0)
+        {
+            cout << "out of bound index hai bro ?????? \n";
+        }
+
+        else {
+           
+
+            for (int i = 0; i <= lenagain; i++)
+            {
+                if (i == indexbai)
+                {
+                    prev->next = current->next;
+                    delete current;
+                    break;
+
+                }
+                else {
+                    prev = current;
+                    current = current->next;
+                }
+            }
+        }
+
+  }
+
+
+};
+
+
+
+
+
+
+
+int main()
+{
+    cout << "be ready to experience a fancy code \n";
+    sortedset <int> bro;
+
+    bro.insertathead(33);
+    bro.insertathead(44);
+    bro.insertathead(1);
+    bro.insertathead(23);
+    bro.insertathead(17);
+    bro.insertathead(40);
+  
+   // bro.insertattail(77);
+    cout << "list 1 \n"; 
+   // bro.print();
+   // cout << "experience the sort \n";
+    bro.sort();
+    bro.print();
+    sortedset <int> bro2;
+   cout << "list 2 \n";
+   bro2.insertathead(56);
+   bro2.insertathead(44);
+   bro2.insertathead(7);
+   bro2.insertathead(8);
+   bro2.insertathead(8);
+   bro2.insertathead(9);
+   bro2.insertathead(9098);
+   
+   //// cout << "experience the sort \n";
+   bro2.sort();
+   bro2.print();
+   cout << "union experience \n"; 
+   bro.unionofset(bro2);
+   bro.print();
+   //
+   //// int ind = 2;
+   //// cout << "breakpoint " << ind << endl; 
+   //// bro2.breakpointer(ind);
+   
+   cout << "the experience of reverse \n";
+   bro.reversemylist();
+   bro.print();
+
+   cout << "plz enter ur index to delete \n";
+   int indididi = 0; 
+   cin >> indididi;
+   bro.deletekrdoab(indididi);
+   bro.print();
+
+  
+
+       
+    return 0;
+
+}
+
